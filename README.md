@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil & Dashboard Admin ICT - Terry Yang</title>
-    <!-- Tailwind CSS -->
+    <title>Terry Yang - Portofolio ICT Mutiara Bangsa 2</title>
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class'
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'sans-serif'],
+                        display: ['Fredoka One', 'cursive', 'sans-serif'],
+                    }
+                }
+            }
         }
     </script>
-    <!-- Google Fonts: Fredoka & Fredoka One -->
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
+            font-family: 'Fredoka', cursive, sans-serif;
             background-color: #FDFBF7;
             color: #4A3E3D;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Smooth Scrolling with Offset for Sticky Navbar */
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 5.5rem;
+        .dark body {
+            background-color: #181513;
+            color: #EADBC8;
         }
-        
-        .font-display {
-            font-family: 'Fredoka One', cursive, sans-serif;
+
+        /* Smooth Scrolling Offset for Sticky Navbar */
+        html {
+            scroll-padding-top: 5.5rem;
         }
 
         .soft-shadow {
@@ -56,7 +66,7 @@
             animation: soft-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
-        /* Custom scrollbar for modals */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -75,7 +85,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-[#FDFBF7] dark:bg-[#181513] text-[#4A3E3D] dark:text-[#EADBC8] selection:bg-[#EADBC8] selection:text-[#3C3633] pb-16 transition-colors duration-300">
+<body class="bg-[#FDFBF7] dark:bg-[#181513] text-[#4A3E3D] dark:text-[#EADBC8] min-h-screen antialiased transition-colors duration-300">
 
     <!-- Floating Mobile Header -->
     <header id="main-header" class="sticky top-0 z-40 backdrop-blur-md bg-[#FDFBF7]/90 dark:bg-[#181513]/90 border-b border-[#F0E5D8] dark:border-[#3D352F] px-4 py-2.5 transition-all duration-300">
@@ -224,10 +234,7 @@
 
             <!-- Dynamic Projects List Container -->
             <div id="projects-list-container" class="space-y-4">
-                <!-- Loading Skeleton -->
-                <div class="bg-[#FFFDF9] dark:bg-[#26211E] border border-[#F0E5D8] dark:border-[#3D352F] rounded-3xl p-8 text-center text-[#8C7A6B] dark:text-[#A89889] animate-pulse">
-                    Memuat data proyek ICT...
-                </div>
+                <!-- Dynamic Content Loaded via LocalStorage -->
             </div>
         </section>
 
@@ -283,7 +290,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="max-w-md mx-auto mt-8 px-5 text-center text-[11px] text-[#8C7A6B] dark:text-[#A89889] space-y-3">
+    <footer class="max-w-md mx-auto mt-8 px-5 text-center text-[11px] text-[#8C7A6B] dark:text-[#A89889] space-y-3 pb-8">
         <!-- Social Media Icons Row -->
         <div class="flex items-center justify-center gap-3 pt-2 pb-1">
             <!-- GitHub -->
@@ -325,11 +332,11 @@
 
         <p>© 2026 Terry Yang • Mutiara Bangsa 2 School.</p>
         <div class="flex items-center justify-center gap-1 text-[10px] text-[#A08E7E]">
-            <span>Portofolio & CMS Backend ICT • Protected with Crypto Hashing & Security Rules</span>
+            <span>Portofolio & CMS Backend ICT • Tersimpan Secara Lokal (LocalStorage)</span>
         </div>
     </footer>
 
-    <!-- MODAL 1: Admin Login Dialog with Rate-limiting & Password Visibility -->
+    <!-- MODAL 1: Admin Login Dialog -->
     <div id="login-modal" class="fixed inset-0 z-50 bg-black/40 dark:bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-[#FFFDF9] dark:bg-[#26211E] border border-[#EADBC8] dark:border-[#3D352F] w-full max-w-sm rounded-3xl p-6 soft-shadow space-y-4">
             <div class="flex items-center justify-between border-b border-[#F0E5D8] dark:border-[#3D352F] pb-3">
@@ -341,7 +348,7 @@
                 </button>
             </div>
 
-            <p class="text-xs text-[#786254] dark:text-[#C4B5A5]">Masukkan username & password terenkripsi untuk mengelola konten portofolio.</p>
+            <p class="text-xs text-[#786254] dark:text-[#C4B5A5]">Masukkan username & password untuk mengelola konten portofolio.</p>
 
             <!-- Alert Notice for Errors & Lockout -->
             <div id="login-error" class="hidden bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-300 text-xs p-3 rounded-xl font-medium leading-relaxed">
@@ -359,13 +366,13 @@
             <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-3">
                 <div>
                     <label class="block text-xs font-semibold text-[#6E5B4F] dark:text-[#C4B5A5] mb-1">Username Admin</label>
-                    <input type="text" id="admin-username" required placeholder="Masukkan username" autocomplete="username"
+                    <input type="text" id="admin-username" required placeholder="Masukkan username (Default: admin)" autocomplete="username"
                            class="w-full px-3.5 py-2.5 rounded-xl border border-[#D8C4B6] dark:border-[#4A4039] bg-[#FDFBF7] dark:bg-[#1E1A17] text-[#3C3633] dark:text-[#FDFBF7] text-xs focus:outline-none focus:ring-2 focus:ring-[#8C6D58]">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-[#6E5B4F] dark:text-[#C4B5A5] mb-1">Password</label>
                     <div class="relative">
-                        <input type="password" id="admin-password" required placeholder="Masukkan password" autocomplete="current-password"
+                        <input type="password" id="admin-password" required placeholder="Masukkan password (Default: admin123)" autocomplete="current-password"
                                class="w-full px-3.5 py-2.5 pr-10 rounded-xl border border-[#D8C4B6] dark:border-[#4A4039] bg-[#FDFBF7] dark:bg-[#1E1A17] text-[#3C3633] dark:text-[#FDFBF7] text-xs focus:outline-none focus:ring-2 focus:ring-[#8C6D58]">
                         <button type="button" onclick="togglePasswordVisibility('admin-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm">
                             👁️
@@ -544,7 +551,7 @@
         </div>
     </div>
 
-    <!-- MODAL 4: Admin Credentials Change Dialog with Password Strength Meter -->
+    <!-- MODAL 4: Admin Credentials Change Dialog -->
     <div id="admin-cred-modal" class="fixed inset-0 z-50 bg-black/40 dark:bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-[#FFFDF9] dark:bg-[#26211E] border border-[#EADBC8] dark:border-[#3D352F] w-full max-w-sm rounded-3xl p-6 soft-shadow space-y-4">
             <div class="flex items-center justify-between border-b border-[#F0E5D8] dark:border-[#3D352F] pb-3">
@@ -556,7 +563,7 @@
                 </button>
             </div>
 
-            <p class="text-xs text-[#786254] dark:text-[#C4B5A5]">Ubah username dan password admin. Password baru akan langsung di-hash menggunakan SHA-256 demi keamanan penuh.</p>
+            <p class="text-xs text-[#786254] dark:text-[#C4B5A5]">Ubah username dan password admin. Password baru akan langsung di-hash menggunakan SHA-256 dan disimpan ke LocalStorage.</p>
 
             <div id="cred-error" class="hidden bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-300 text-xs p-3 rounded-xl font-medium leading-relaxed">
                 Pesan kesalahan kredensial
@@ -579,7 +586,7 @@
                         </button>
                     </div>
 
-                    <!-- Password Strength Bar & Indicators -->
+                    <!-- Password Strength Bar -->
                     <div class="mt-2 space-y-1">
                         <div class="h-1.5 w-full bg-[#EADBC8] dark:bg-[#3D352F] rounded-full overflow-hidden">
                             <div id="pwd-strength-bar" class="h-full w-0 transition-all duration-300 bg-red-500"></div>
@@ -614,17 +621,19 @@
         Pesan Notifikasi
     </div>
 
-    <!-- Firebase & Security Module -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- Core JavaScript Application Logic with LocalStorage -->
+    <script>
+        // Storage Keys for LocalStorage
+        const STORAGE_KEY_PROFILE = "terry_portfolio_profile_v1";
+        const STORAGE_KEY_PROJECTS = "terry_portfolio_projects_v1";
+        const STORAGE_KEY_CREDS = "terry_portfolio_creds_v1";
+        const STORAGE_KEY_ADMIN_SESSION = "terry_portfolio_admin_logged_in";
 
         // Global Security Salt & Web Crypto Hashing
         const SECURITY_SALT = "TerryYang_ICT_2026_SecureSalt_MB2!";
         const MAX_FAILED_ATTEMPTS = 5;
-        const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 Menit lockout jika 5x gagal
-        const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 Menit auto-logout jika inaktif
+        const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 Menit lockout
+        const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 Menit auto-logout
 
         async function hashText(plainText) {
             if (!plainText) return "";
@@ -635,33 +644,11 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // Global App Context & Firebase setup
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'terry-yang-ict-portfolio';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "demo-api-key",
-                authDomain: "demo-project.firebaseapp.com",
-                projectId: "demo-project",
-                storageBucket: "demo-project.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
-            };
-
-        let db = null;
-        let auth = null;
-        let currentUser = null;
         let isAdminLoggedIn = false;
         let lockoutTimerInterval = null;
         let inactivityTimer = null;
 
-        // Default Admin Credential Hashes (Will be calculated dynamically on boot)
-        let adminCreds = {
-            usernameHash: "",
-            passwordHash: ""
-        };
-
-        // Default Data Fallback
+        // Default Data Fallbacks
         const DEFAULT_PROFILE = {
             name: "Halo, Saya Terry Yang 👋",
             statusBadge: "Mutiara Bangsa 2 School • Kelas ICT",
@@ -704,105 +691,67 @@
 
         let stateProfile = { ...DEFAULT_PROFILE };
         let stateProjects = [...DEFAULT_PROJECTS];
+        let adminCreds = { usernameHash: "", passwordHash: "" };
         window.currentProjectImageData = "";
 
-        // UI State sync
-        window.appState = {
-            profile: stateProfile,
-            projects: stateProjects
-        };
-
-        async function initDefaultCreds() {
-            const defaultUserHash = await hashText("admin");
-            const defaultPassHash = await hashText("admin123");
-            adminCreds = {
-                usernameHash: defaultUserHash,
-                passwordHash: defaultPassHash
-            };
-        }
-
-        async function initBackend() {
-            await initDefaultCreds();
-
-            try {
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                // Authenticate before querying
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
+        // Initialize Data from LocalStorage
+        async function loadLocalStorageData() {
+            // 1. Load Admin Credentials
+            const savedCreds = localStorage.getItem(STORAGE_KEY_CREDS);
+            if (savedCreds) {
+                try {
+                    adminCreds = JSON.parse(savedCreds);
+                } catch (e) {
+                    console.error("Error parsing saved creds:", e);
                 }
-
-                currentUser = auth.currentUser;
-                console.log("Firebase Backend Authenticated! UID:", currentUser?.uid);
-
-                const profileRef = doc(db, 'artifacts', appId, 'public', 'data', 'profile', 'info');
-                const projectsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'projects');
-                const credsRef = doc(db, 'artifacts', appId, 'public', 'data', 'credentials', 'admin');
-
-                // Realtime Listener for Admin Credentials
-                onSnapshot(credsRef, async (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.data();
-                        // Support legacy unhashed migration if needed
-                        if (data.username && !data.usernameHash) {
-                            adminCreds.usernameHash = await hashText(data.username);
-                        } else if (data.usernameHash) {
-                            adminCreds.usernameHash = data.usernameHash;
-                        }
-
-                        if (data.password && !data.passwordHash) {
-                            adminCreds.passwordHash = await hashText(data.password);
-                        } else if (data.passwordHash) {
-                            adminCreds.passwordHash = data.passwordHash;
-                        }
-                    } else {
-                        // Seed hashed default credentials
-                        setDoc(credsRef, adminCreds).catch(err => console.warn("Seed creds error:", err));
-                    }
-                }, (error) => {
-                    console.warn("Firestore Creds Listener Notice:", error);
-                });
-
-                // Realtime Listener for Profile
-                onSnapshot(profileRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                        stateProfile = { ...DEFAULT_PROFILE, ...snapshot.data() };
-                    } else {
-                        setDoc(profileRef, DEFAULT_PROFILE).catch(err => console.warn("Seed error:", err));
-                    }
-                    renderProfileUI();
-                }, (error) => {
-                    console.warn("Firestore Profile Listener Notice:", error);
-                    renderProfileUI();
-                });
-
-                // Realtime Listener for Projects
-                onSnapshot(projectsColRef, (snapshot) => {
-                    const loadedProjects = [];
-                    snapshot.forEach((docSnap) => {
-                        loadedProjects.push({ id: docSnap.id, ...docSnap.data() });
-                    });
-
-                    if (loadedProjects.length > 0) {
-                        stateProjects = loadedProjects;
-                    } else {
-                        stateProjects = [...DEFAULT_PROJECTS];
-                    }
-                    renderProjectsUI();
-                }, (error) => {
-                    console.warn("Firestore Projects Listener Notice:", error);
-                    renderProjectsUI();
-                });
-
-            } catch (err) {
-                console.warn("Using offline fallback storage logic:", err);
-                renderProfileUI();
-                renderProjectsUI();
             }
+            
+            if (!adminCreds.usernameHash || !adminCreds.passwordHash) {
+                adminCreds = {
+                    usernameHash: await hashText("admin"),
+                    passwordHash: await hashText("admin123")
+                };
+                localStorage.setItem(STORAGE_KEY_CREDS, JSON.stringify(adminCreds));
+            }
+
+            // 2. Load Profile Data
+            const savedProfile = localStorage.getItem(STORAGE_KEY_PROFILE);
+            if (savedProfile) {
+                try {
+                    stateProfile = { ...DEFAULT_PROFILE, ...JSON.parse(savedProfile) };
+                } catch (e) {
+                    console.error("Error parsing saved profile:", e);
+                    stateProfile = { ...DEFAULT_PROFILE };
+                }
+            } else {
+                stateProfile = { ...DEFAULT_PROFILE };
+                localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(stateProfile));
+            }
+
+            // 3. Load Projects Data
+            const savedProjects = localStorage.getItem(STORAGE_KEY_PROJECTS);
+            if (savedProjects) {
+                try {
+                    stateProjects = JSON.parse(savedProjects);
+                } catch (e) {
+                    console.error("Error parsing saved projects:", e);
+                    stateProjects = [...DEFAULT_PROJECTS];
+                }
+            } else {
+                stateProjects = [...DEFAULT_PROJECTS];
+                localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(stateProjects));
+            }
+
+            // 4. Load Admin Session Active state
+            const savedAdminSession = sessionStorage.getItem(STORAGE_KEY_ADMIN_SESSION);
+            if (savedAdminSession === 'true') {
+                isAdminLoggedIn = true;
+                resetInactivityTimer();
+            }
+
+            renderProfileUI();
+            renderProjectsUI();
+            updateAdminViewUI();
         }
 
         function renderProfileUI() {
@@ -1020,6 +969,7 @@
             if (inputUserHash === adminCreds.usernameHash && inputPassHash === adminCreds.passwordHash) {
                 clearFailedAttempts();
                 isAdminLoggedIn = true;
+                sessionStorage.setItem(STORAGE_KEY_ADMIN_SESSION, 'true');
                 closeAdminModal();
                 updateAdminViewUI();
                 resetInactivityTimer();
@@ -1110,29 +1060,20 @@
                 return;
             }
 
-            const updatedCreds = {
+            adminCreds = {
                 usernameHash: await hashText(newUsername),
                 passwordHash: await hashText(newPassword)
             };
 
-            try {
-                if (db && auth?.currentUser) {
-                    const credsRef = doc(db, 'artifacts', appId, 'public', 'data', 'credentials', 'admin');
-                    await setDoc(credsRef, updatedCreds, { merge: true });
-                } else {
-                    adminCreds = updatedCreds;
-                }
+            localStorage.setItem(STORAGE_KEY_CREDS, JSON.stringify(adminCreds));
 
-                showToast("🔑 Kredensial Admin terenkripsi berhasil diperbarui!");
-                closeAdminCredModal();
-            } catch (err) {
-                console.error("Save creds error:", err);
-                showToast("⚠️ Gagal menyimpan kredensial terenkripsi.");
-            }
+            showToast("🔑 Kredensial Admin berhasil diperbarui dan disimpan di LocalStorage!");
+            closeAdminCredModal();
         };
 
         window.logoutAdmin = function() {
             isAdminLoggedIn = false;
+            sessionStorage.removeItem(STORAGE_KEY_ADMIN_SESSION);
             clearTimeout(inactivityTimer);
             updateAdminViewUI();
             showToast("🔒 Telah keluar dari Mode Admin.");
@@ -1266,7 +1207,7 @@
             document.getElementById('project-modal').classList.add('hidden');
         };
 
-        window.handleSaveProject = async function(e) {
+        window.handleSaveProject = function(e) {
             e.preventDefault();
             const projId = document.getElementById('project-id').value;
             const projectData = {
@@ -1278,53 +1219,33 @@
                 imageUrl: window.currentProjectImageData || document.getElementById('project-image-url').value.trim() || ""
             };
 
-            try {
-                if (db && auth?.currentUser) {
-                    if (projId) {
-                        const projRef = doc(db, 'artifacts', appId, 'public', 'data', 'projects', projId);
-                        await setDoc(projRef, projectData, { merge: true });
-                    } else {
-                        const projColRef = collection(db, 'artifacts', appId, 'public', 'data', 'projects');
-                        await addDoc(projColRef, projectData);
-                    }
-                } else {
-                    if (projId) {
-                        const idx = stateProjects.findIndex(p => p.id === projId);
-                        if (idx !== -1) stateProjects[idx] = { id: projId, ...projectData };
-                    } else {
-                        stateProjects.push({ id: 'proj_' + Date.now(), ...projectData });
-                    }
-                    renderProjectsUI();
-                }
-
-                showToast("🎉 Data proyek & gambar berhasil disimpan!");
-                closeProjectModal();
-            } catch (err) {
-                console.error("Error saving project:", err);
-                showToast("⚠️ Gagal menyimpan ke cloud.");
-                closeProjectModal();
+            if (projId) {
+                const idx = stateProjects.findIndex(p => p.id === projId);
+                if (idx !== -1) stateProjects[idx] = { id: projId, ...projectData };
+            } else {
+                stateProjects.push({ id: 'proj_' + Date.now(), ...projectData });
             }
+
+            // Save to LocalStorage
+            localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(stateProjects));
+            renderProjectsUI();
+
+            showToast("🎉 Data proyek & gambar berhasil disimpan ke LocalStorage!");
+            closeProjectModal();
         };
 
-        window.handleDeleteProject = async function() {
+        window.handleDeleteProject = function() {
             const projId = document.getElementById('project-id').value;
             if (!projId) return;
 
-            try {
-                if (db && auth?.currentUser) {
-                    const projRef = doc(db, 'artifacts', appId, 'public', 'data', 'projects', projId);
-                    await deleteDoc(projRef);
-                } else {
-                    stateProjects = stateProjects.filter(p => p.id !== projId);
-                    renderProjectsUI();
-                }
+            stateProjects = stateProjects.filter(p => p.id !== projId);
+            
+            // Save to LocalStorage
+            localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(stateProjects));
+            renderProjectsUI();
 
-                showToast("🗑️ Proyek telah dihapus.");
-                closeProjectModal();
-            } catch (err) {
-                console.error("Delete error:", err);
-                showToast("⚠️ Gagal menghapus proyek.");
-            }
+            showToast("🗑️ Proyek telah dihapus.");
+            closeProjectModal();
         };
 
         // Profile Edit Modal
@@ -1350,7 +1271,7 @@
             document.getElementById('profile-modal').classList.add('hidden');
         };
 
-        window.handleSaveProfile = async function(e) {
+        window.handleSaveProfile = function(e) {
             e.preventDefault();
             const skillsRaw = document.getElementById('edit-profile-skills').value;
             const updatedProfile = {
@@ -1368,20 +1289,14 @@
                 }
             };
 
-            try {
-                if (db && auth?.currentUser) {
-                    const profileRef = doc(db, 'artifacts', appId, 'public', 'data', 'profile', 'info');
-                    await setDoc(profileRef, updatedProfile, { merge: true });
-                } else {
-                    stateProfile = updatedProfile;
-                    renderProfileUI();
-                }
-                showToast("✨ Informasi profil & media sosial berhasil diperbarui!");
-                closeProfileModal();
-            } catch (err) {
-                console.error("Profile save error:", err);
-                showToast("⚠️ Terjadi kendala saat menyimpan profil.");
-            }
+            stateProfile = updatedProfile;
+            
+            // Save to LocalStorage
+            localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(stateProfile));
+            renderProfileUI();
+
+            showToast("✨ Informasi profil & media sosial berhasil diperbarui dan disimpan!");
+            closeProfileModal();
         };
 
         function showToast(message) {
@@ -1430,7 +1345,7 @@
         // Initialize App on DOM Load
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
-            initBackend();
+            loadLocalStorageData();
 
             // Dynamic Sticky Header Scroll Effect
             window.addEventListener('scroll', () => {
