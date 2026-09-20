@@ -712,7 +712,40 @@
             projects: stateProjects
         };
 
+        // Storage Keys for LocalStorage persistence
+        const STORAGE_KEYS = {
+            PROFILE: 'ty_portfolio_profile_v1',
+            PROJECTS: 'ty_portfolio_projects_v1',
+            CREDS: 'ty_portfolio_creds_v1'
+        };
+
+        function loadLocalStorageData() {
+            try {
+                const savedProfile = localStorage.getItem(STORAGE_KEYS.PROFILE);
+                if (savedProfile) {
+                    stateProfile = { ...DEFAULT_PROFILE, ...JSON.parse(savedProfile) };
+                }
+                const savedProjects = localStorage.getItem(STORAGE_KEYS.PROJECTS);
+                if (savedProjects) {
+                    stateProjects = JSON.parse(savedProjects);
+                }
+                const savedCreds = localStorage.getItem(STORAGE_KEYS.CREDS);
+                if (savedCreds) {
+                    adminCreds = JSON.parse(savedCreds);
+                }
+            } catch (e) {
+                console.warn("LocalStorage load error:", e);
+            }
+        }
+
         async function initDefaultCreds() {
+            const savedCreds = localStorage.getItem(STORAGE_KEYS.CREDS);
+            if (savedCreds) {
+                try {
+                    adminCreds = JSON.parse(savedCreds);
+                    return;
+                } catch (e) {}
+            }
             const defaultUserHash = await hashText("admin");
             const defaultPassHash = await hashText("admin123");
             adminCreds = {
@@ -723,6 +756,9 @@
 
         async function initBackend() {
             await initDefaultCreds();
+            loadLocalStorageData();
+            renderProfileUI();
+            renderProjectsUI();
 
             try {
                 const app = initializeApp(firebaseConfig);
@@ -1115,19 +1151,25 @@
                 passwordHash: await hashText(newPassword)
             };
 
+            adminCreds = updatedCreds;
+            try {
+                localStorage.setItem(STORAGE_KEYS.CREDS, JSON.stringify(adminCreds));
+            } catch (e) {
+                console.warn("Failed saving creds to LocalStorage:", e);
+            }
+
             try {
                 if (db && auth?.currentUser) {
                     const credsRef = doc(db, 'artifacts', appId, 'public', 'data', 'credentials', 'admin');
                     await setDoc(credsRef, updatedCreds, { merge: true });
-                } else {
-                    adminCreds = updatedCreds;
                 }
 
-                showToast("🔑 Kredensial Admin terenkripsi berhasil diperbarui!");
+                showToast("🔑 Kredensial Admin terenkripsi berhasil diperbarui dan disimpan!");
                 closeAdminCredModal();
             } catch (err) {
                 console.error("Save creds error:", err);
-                showToast("⚠️ Gagal menyimpan kredensial terenkripsi.");
+                showToast("⚠️ Berhasil disimpan di lokal, kendala koneksi cloud.");
+                closeAdminCredModal();
             }
         };
 
@@ -1278,6 +1320,20 @@
                 imageUrl: window.currentProjectImageData || document.getElementById('project-image-url').value.trim() || ""
             };
 
+            if (projId) {
+                const idx = stateProjects.findIndex(p => p.id === projId);
+                if (idx !== -1) stateProjects[idx] = { id: projId, ...projectData };
+            } else {
+                stateProjects.push({ id: 'proj_' + Date.now(), ...projectData });
+            }
+
+            try {
+                localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(stateProjects));
+            } catch (e) {
+                console.warn("Failed saving projects to LocalStorage:", e);
+            }
+            renderProjectsUI();
+
             try {
                 if (db && auth?.currentUser) {
                     if (projId) {
@@ -1287,21 +1343,13 @@
                         const projColRef = collection(db, 'artifacts', appId, 'public', 'data', 'projects');
                         await addDoc(projColRef, projectData);
                     }
-                } else {
-                    if (projId) {
-                        const idx = stateProjects.findIndex(p => p.id === projId);
-                        if (idx !== -1) stateProjects[idx] = { id: projId, ...projectData };
-                    } else {
-                        stateProjects.push({ id: 'proj_' + Date.now(), ...projectData });
-                    }
-                    renderProjectsUI();
                 }
 
                 showToast("🎉 Data proyek & gambar berhasil disimpan!");
                 closeProjectModal();
             } catch (err) {
                 console.error("Error saving project:", err);
-                showToast("⚠️ Gagal menyimpan ke cloud.");
+                showToast("🎉 Tersimpan di memori lokal!");
                 closeProjectModal();
             }
         };
@@ -1310,20 +1358,26 @@
             const projId = document.getElementById('project-id').value;
             if (!projId) return;
 
+            stateProjects = stateProjects.filter(p => p.id !== projId);
+            try {
+                localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(stateProjects));
+            } catch (e) {
+                console.warn("Failed saving projects to LocalStorage:", e);
+            }
+            renderProjectsUI();
+
             try {
                 if (db && auth?.currentUser) {
                     const projRef = doc(db, 'artifacts', appId, 'public', 'data', 'projects', projId);
                     await deleteDoc(projRef);
-                } else {
-                    stateProjects = stateProjects.filter(p => p.id !== projId);
-                    renderProjectsUI();
                 }
 
                 showToast("🗑️ Proyek telah dihapus.");
                 closeProjectModal();
             } catch (err) {
                 console.error("Delete error:", err);
-                showToast("⚠️ Gagal menghapus proyek.");
+                showToast("🗑️ Proyek dihapus dari lokal.");
+                closeProjectModal();
             }
         };
 
@@ -1368,19 +1422,25 @@
                 }
             };
 
+            stateProfile = updatedProfile;
+            try {
+                localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(stateProfile));
+            } catch (e) {
+                console.warn("Failed saving profile to LocalStorage:", e);
+            }
+            renderProfileUI();
+
             try {
                 if (db && auth?.currentUser) {
                     const profileRef = doc(db, 'artifacts', appId, 'public', 'data', 'profile', 'info');
                     await setDoc(profileRef, updatedProfile, { merge: true });
-                } else {
-                    stateProfile = updatedProfile;
-                    renderProfileUI();
                 }
                 showToast("✨ Informasi profil & media sosial berhasil diperbarui!");
                 closeProfileModal();
             } catch (err) {
                 console.error("Profile save error:", err);
-                showToast("⚠️ Terjadi kendala saat menyimpan profil.");
+                showToast("✨ Informasi profil berhasil disimpan di lokal!");
+                closeProfileModal();
             }
         };
 
