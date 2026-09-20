@@ -636,17 +636,15 @@
         }
 
         // Global App Context & Firebase setup
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'terry-yang-ict-portfolio';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "demo-api-key",
-                authDomain: "demo-project.firebaseapp.com",
-                projectId: "demo-project",
-                storageBucket: "demo-project.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
-            };
+        const appId = 'terry-yang-ict-portfolio';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSc_G7T5zE8SJIvABuKsJMxXVCGuQMjrs",
+            authDomain: "my-portofolioo-ict.firebaseapp.com",
+            projectId: "my-portofolioo-ict",
+            storageBucket: "my-portofolioo-ict.firebasestorage.app",
+            messagingSenderId: "542865973968",
+            appId: "1:542865973968:web:9138c0c7c7afe0adda74d5"
+        };
 
         let db = null;
         let auth = null;
@@ -783,7 +781,6 @@
                 onSnapshot(credsRef, async (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.data();
-                        // Support legacy unhashed migration if needed
                         if (data.username && !data.usernameHash) {
                             adminCreds.usernameHash = await hashText(data.username);
                         } else if (data.usernameHash) {
@@ -795,6 +792,7 @@
                         } else if (data.passwordHash) {
                             adminCreds.passwordHash = data.passwordHash;
                         }
+                        try { localStorage.setItem(STORAGE_KEYS.CREDS, JSON.stringify(adminCreds)); } catch(e){}
                     } else {
                         // Seed hashed default credentials
                         setDoc(credsRef, adminCreds).catch(err => console.warn("Seed creds error:", err));
@@ -807,6 +805,7 @@
                 onSnapshot(profileRef, (snapshot) => {
                     if (snapshot.exists()) {
                         stateProfile = { ...DEFAULT_PROFILE, ...snapshot.data() };
+                        try { localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(stateProfile)); } catch(e){}
                     } else {
                         setDoc(profileRef, DEFAULT_PROFILE).catch(err => console.warn("Seed error:", err));
                     }
@@ -827,7 +826,13 @@
                         stateProjects = loadedProjects;
                     } else {
                         stateProjects = [...DEFAULT_PROJECTS];
+                        // Optionally seed initial projects into firestore
+                        DEFAULT_PROJECTS.forEach(p => {
+                            const newDoc = doc(db, 'artifacts', appId, 'public', 'data', 'projects', p.id);
+                            setDoc(newDoc, p).catch(err => console.warn("Seed proj error:", err));
+                        });
                     }
+                    try { localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(stateProjects)); } catch(e){}
                     renderProjectsUI();
                 }, (error) => {
                     console.warn("Firestore Projects Listener Notice:", error);
